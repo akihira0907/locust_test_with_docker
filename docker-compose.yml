@@ -8,17 +8,20 @@ services:
       locust-master
     env_file: master-env.env
     ports:
-      - "8889:8889"
-    expose:
-      - "5557"
+      - "8089:8089"
     # environment:
     #   - LOCUST_MODE=master
     #   - LOCUSTFILE_PATH="/locust/locustfile.py"
     #   - TARGET_URL="http://localhost:80"
     volumes:
-      - .:/locust
-    # entrypoint:
-    #   - locust
+      - ./tests:/locust
+    entrypoint:
+      - locust
+      - -f
+      - /locust/locustfile.py
+      - -H
+      - http://localhost:80
+      - --master
 
   locust-slave:
     image: locustio/locust
@@ -27,11 +30,14 @@ services:
     env_file: slave-env.env
     # environment:
     #   - LOCUST_MODE=slave
-    #   - LOCUST_MASTER_NAME=locust-master
+    #   - LOCUST_MASTER_HOST=locust-master
     #   - LOCUST_MASTER_PORT=5557
     volumes:
-      - .:/locust
-    links:
+      - ./tests:/locust
+    depends_on:
       - locust-master
-    # entrypoint:
-    #   - locust
+    entrypoint:
+      - locust
+      - -f
+      - /locust/locustfile.py
+      - --slave
