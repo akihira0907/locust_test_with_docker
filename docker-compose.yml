@@ -16,7 +16,7 @@ services:
     #   - LOCUSTFILE_PATH="/locust/locustfile.py"
     #   - TARGET_URL="http://localhost:80"
     volumes:
-      - ./:/locust
+      - .:/locust
     # entrypoint:
     #   - locust
 
@@ -30,7 +30,7 @@ services:
     #   - LOCUST_MASTER_NAME=locust-master
     #   - LOCUST_MASTER_PORT=5557
     volumes:
-      - ./:/locust
+      - .:/locust
     links:
       - locust-master
     # entrypoint:
